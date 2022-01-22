@@ -14,7 +14,7 @@ def arrayAvg(array): #arrayAvg function is used to calculate the average color v
 img = cv.imread('circles.png')
 h, w, _ = img.shape
 
-pixelizationRatio = 1 # pixelization ratio determines the effect's power 1 means effect is off
+pixelizationRatio = 2 # pixelization ratio determines the effect's power 1 means effect is off
 pr = pow(2, pixelizationRatio - 1) # pr = pixelization ratio is used in indexing
 pixelizatedImg = img
 
