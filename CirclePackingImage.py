@@ -3,21 +3,25 @@ from random import randint, choice
 import cv2 as cv
 import numpy as np
 
+#Editable
 img_w = 800
 img_h = 600
 background_color = (0, 0, 0)
 draw_color = (255, 255, 255)
 circle_thickness = 1
+example_img = cv.imread('image.jpg') # replace with the image name you want to work on
+useImg = True # False will produce random image packing inside the window
+restart = False # Determines if the algorithm should restart after finishing
+
+#Non Editable
 img = np.zeros((img_h, img_w, 3), dtype=np.uint8)
 img[0:img_h, 0:img_w] = background_color
-example_img = cv.imread('kitten.jpg')
 example_img = cv.resize(example_img, (img_w, img_h))
 circles = []
 available = []
 canDraw = True
-useImg = True
-restart = False
 
+# get every valid point
 if useImg:
     for i in range(0, img_h - 1):
         for j in range(0, img_w - 1):
@@ -25,6 +29,7 @@ if useImg:
 
 print(len(available))
 
+# circle class for storing data
 class Circle():
     growing = True
 
@@ -44,6 +49,7 @@ class Circle():
     def edges(self):
         return self.x + self.r >= img_w or self.x - self.r <= 0 or self.y + self.r >= img_h or self.y - self.r <= 0
 
+# function that founds new empty areas to insert circles
 def NewCircle():
     if useImg:
         r_index = randint(0, len(available))
@@ -75,6 +81,7 @@ while True:
     count = 0
     attempts = 0
 
+    # check for empty areas
     while count < total and canDraw:
         temp_circle = NewCircle()
         if temp_circle is not None:
@@ -85,6 +92,7 @@ while True:
             canDraw = False
             print("Cannot create new circles")
 
+    # check for circle collision
     for circle in circles:
         if circle.growing:
             if circle.edges():
@@ -95,11 +103,13 @@ while True:
                         d = dist((circle.x, circle.y), (otherCircle.x, otherCircle.y))
                         if d - circle_thickness < circle.r + otherCircle.r:
                             circle.growing = False
+                            otherCircle.growing = False
                             break
         circle.grow()
         circle.show(img)
 
-    cv.imshow("Example Image", example_img)
+    if useImg:
+        cv.imshow("Example Image", example_img)
     cv.imshow("Circle Packing Algorithm", img)
 
     c = cv.waitKey(1) % 256
@@ -112,7 +122,7 @@ while True:
         if useImg:
             useImg = False
         else:
-            useImg
+            useImg = True
 
     if c == ord('a'):
         cv.imwrite('circle_packing.jpg', img)
