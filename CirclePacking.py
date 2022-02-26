@@ -29,14 +29,14 @@ text_img = np.zeros((img_h, img_w, 3), dtype=np.uint8)
 text_img[0:img_h, 0:img_w] = background_color
 text_pos = ((img_w // 2) - len(text) * text_multiplier_x * (font_size // 2), (img_h // 2) + text_multiplier_y * (font_size // 2))
 print(text_pos)
-text_img = cv.putText(text_img, text, text_pos, cv.FONT_HERSHEY_SIMPLEX, font_size, (draw_color), text_thickness)
+text_img = cv.putText(text_img, text, text_pos, cv.FONT_HERSHEY_SIMPLEX, font_size, (255, 255, 255), text_thickness)
 canDraw = True
 
 # calculate teh coorinates that is inside the white area
 if useText:
     for i in range(0, img_h - 1):
         for j in range(0, img_w - 1):
-            if text_img[i, j][0] == 255:
+            if text_img[i, j][0] == 255 or text_img[i, j][1] == 255 or text_img[i, j][2] == 255:
                 available.append((i, j))
 print('calculated : ' + str(len(available)))
 
