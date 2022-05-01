@@ -12,6 +12,7 @@ circle_thickness = 1
 example_img = cv.imread('image.jpg') # replace with the image name you want to work on
 useImg = True # False will produce random image packing inside the window
 restart = False # Determines if the algorithm should restart after finishing
+max_circles_size = 0 # 0 for off 
 
 #Non Editable
 img = np.zeros((img_h, img_w, 3), dtype=np.uint8)
@@ -95,7 +96,7 @@ while True:
     # check for circle collision
     for circle in circles:
         if circle.growing:
-            if circle.edges():
+            if circle.edges() or circle.r >= max_circles_size:
                 circle.growing = False
             else:
                 for otherCircle in circles:
